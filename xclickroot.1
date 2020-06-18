@@ -1,0 +1,34 @@
+.TH xclickroot 1
+.SH NAME
+xclickroot \- run command on button press on root window
+.SH SYNOPSIS
+.B xclickroot
+.RB [ \-12345lmr ]
+.I command
+.RI [ arg ...]
+.SH DESCRIPTION
+.B xclickroot
+runs a command when a given mouse button is pressed on the root window.
+The arguments
+.I command
+and
+.IR args ...
+are the command to be run and its arguments.
+.PP
+By default, the command is run when the right mouse button is pressed on the root window.
+This can be changed by one of the following options.
+.TP
+.BR -1 ", " -l
+Use the left mouse button.
+.TP
+.BR -2 ", " -m
+Use the middle mouse button.
+.TP
+.BR -3 ", " -r
+Use the right mouse button.
+.TP
+.B -4
+Use scroll up.
+.TP
+.B -5
+Use scroll down.

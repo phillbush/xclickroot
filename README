@@ -1,0 +1,34 @@
+                               xclickroot
+
+xclickroot runs a command every time a given mouse button is pressed on
+the root window.
+
+§ Installation
+
+In order to build xclickroot you need the Xlib header files.
+
+Edit config.mk to match your local setup (xclickroot is installed into
+the /usr/local prefix by default).  Then enter the following command to
+build and install xclickroot (if necessary as root).
+
+	make clean install
+
+§ Running xclickroot
+
+xclickroot gets as argument an command and its arguments and run this
+command every time the right mouse button is pressed on the root window.
+
+One of the options -l, -m, -r, -1, -2, -3, -4, or -5 can be  passed as
+first argument.  Those options indicates, respectivelly, that the left,
+middle, right or N-th mouse button is to be used instead.
+
+Call xclickroot on your .xinit or .xsession file in background, before
+the window manager.  As the following:
+
+	xclickroot -l xterm &
+
+Read the manual for more information on running xmenu.
+
+§ LICENSE
+
+This software is in the public domain and is provided AS IS, with NO WARRANTY.
