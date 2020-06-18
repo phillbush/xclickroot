@@ -1,4 +1,5 @@
 #include <err.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -46,6 +47,8 @@ main(int argc, char *argv[])
 		errx(1, "cannot open display");
 	screen = DefaultScreen(dpy);
 	rootwin = DefaultRootWindow(dpy);
+
+	signal(SIGCHLD, SIG_IGN);
 
 	XGrabButton(dpy, button, 0, rootwin, False, ButtonPressMask,
 	            GrabModeSync, GrabModeSync, None, None);
