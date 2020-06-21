@@ -15,12 +15,11 @@ clean:
 	-rm ${OBJS} ${PROG}
 
 install: all
-	install -d ${DESTDIR}${PREFIX}/bin/
-	install -m 755 ${PROG} ${DESTDIR}${PREFIX}/bin/
-	install -m 644 ${PROG}.1 ${DESTDIR}${MANPREFIX}
+	install -D -m 755 ${PROG} ${DESTDIR}${PREFIX}/bin/${PROG}
+	install -D -m 644 ${PROG}.1 ${DESTDIR}${MANPREFIX}/man1/${PROG}.1
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/${PROG}
-	rm -f ${DESTDIR}/${MANPREFIX}/${PROG}.1
+	rm -f ${DESTDIR}${MANPREFIX}/man1/${PROG}.1
 
 .PHONY: all clean install uninstall
