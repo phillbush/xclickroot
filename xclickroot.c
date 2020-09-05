@@ -19,8 +19,10 @@ main(int argc, char *argv[])
 	unsigned button;
 	XEvent ev;
 
+	argv++;
+	argc--;
 	button = Button3;
-	if ((*++argv)[0] == '-') {
+	if (*argv && (*argv)[0] == '-') {
 		switch ((*argv)[1]) {
 		case '1': case 'l': button = Button1; break;
 		case '2': case 'm': button = Button2; break;
@@ -39,7 +41,7 @@ main(int argc, char *argv[])
 		argc--;
 	}
 
-	if (--argc == 0)
+	if (argc == 0)
 		usage();
 
 	/* open connection to server and set X variables */
