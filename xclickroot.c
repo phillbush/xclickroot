@@ -52,7 +52,7 @@ main(int argc, char *argv[])
 
 	signal(SIGCHLD, SIG_IGN);
 
-	XGrabButton(dpy, button, 0, rootwin, False, ButtonPressMask,
+	XGrabButton(dpy, button, AnyModifier, rootwin, False, ButtonPressMask,
 	            GrabModeSync, GrabModeSync, None, None);
 
 	while (!XWindowEvent(dpy, rootwin, ButtonPressMask, &ev)) {
