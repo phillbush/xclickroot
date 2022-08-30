@@ -28,7 +28,3 @@ the window manager.  As the following:
 	xclickroot -l xterm &
 
 Read the manual for more information on running xmenu.
-
-§ LICENSE
-
-This software is in the public domain and is provided AS IS, with NO WARRANTY.
