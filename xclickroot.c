@@ -1,18 +1,23 @@
+#include <sys/wait.h>
+
 #include <err.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
 #include <X11/Xlib.h>
 
-static void usage(void);
-
-/* X Variables */
 static Display *dpy;
 static Window rootwin;
 static int screen;
 
-/* xclickroot: execute a command by clicking on the root window */
+static void
+usage(void)
+{
+	(void)fprintf(stderr, "usage: xclickroot [-12345lmr] command [args...]\n");
+	exit(1);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -49,35 +54,27 @@ main(int argc, char *argv[])
 		errx(1, "cannot open display");
 	screen = DefaultScreen(dpy);
 	rootwin = DefaultRootWindow(dpy);
-
-	signal(SIGCHLD, SIG_IGN);
-
 	XGrabButton(dpy, button, AnyModifier, rootwin, False, ButtonPressMask,
 	            GrabModeSync, GrabModeSync, None, None);
-
 	while (!XWindowEvent(dpy, rootwin, ButtonPressMask, &ev)) {
-		switch (ev.type) {
-		case ButtonPress:
-			if (ev.xbutton.button == button && ev.xbutton.subwindow == None) {
+		if (ev.type == ButtonPress) {
+			if (ev.xbutton.button != button || ev.xbutton.subwindow != None) {
+				XAllowEvents(dpy, ReplayPointer, CurrentTime);
+				break;
+			}
+			XUngrabPointer(dpy, ev.xbutton.time);
+			XAllowEvents(dpy, ReplayPointer, CurrentTime);
+			XFlush(dpy);
+			if (fork() == 0) {
 				if (fork() == 0) {
 					execvp(*argv, argv);
 					err(127, NULL);
 				}
+				exit(0);
 			}
-			XAllowEvents(dpy, ReplayPointer, CurrentTime);
-			break;
+			wait(NULL);
 		}
 	}
-
 	XCloseDisplay(dpy);
-
 	return 0;
-}
-
-/* show usage */
-static void
-usage(void)
-{
-	(void)fprintf(stderr, "usage: xclickroot [-12345lmr] command [args...]\n");
-	exit(1);
 }
