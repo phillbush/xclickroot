@@ -60,7 +60,7 @@ main(int argc, char *argv[])
 		if (ev.type == ButtonPress) {
 			if (ev.xbutton.button != button || ev.xbutton.subwindow != None) {
 				XAllowEvents(dpy, ReplayPointer, CurrentTime);
-				break;
+				continue;
 			}
 			XUngrabPointer(dpy, ev.xbutton.time);
 			XAllowEvents(dpy, ReplayPointer, CurrentTime);
