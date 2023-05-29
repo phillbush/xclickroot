@@ -21,11 +21,6 @@ main(int argc, char *argv[])
 	Display *dpy;
 	Window rootwin;
 
-#if __OpenBSD__
-	if (pledge("unix stdio rpath proc exec", NULL) == -1)
-		err(EXIT_FAILURE, "pledge");
-#endif
-
 	argv++;
 	argc--;
 	button = Button3;
@@ -57,6 +52,16 @@ main(int argc, char *argv[])
 	/* open connection to server and set X variables */
 	if ((dpy = XOpenDisplay(NULL)) == NULL)
 		errx(EXIT_FAILURE, "cannot open display");
+
+#if __OpenBSD__
+	/*
+	 * rpath: xlib needs it at runtime (for e.g. reading the error db)
+	 * proc exec: running the program
+	 */
+	if (pledge("stdio rpath proc exec", NULL) == -1)
+		err(EXIT_FAILURE, "pledge");
+#endif
+
 	rootwin = DefaultRootWindow(dpy);
 	XGrabButton(dpy, button, AnyModifier, rootwin, False, ButtonPressMask,
 	            GrabModeSync, GrabModeSync, None, None);
