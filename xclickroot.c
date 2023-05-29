@@ -1,5 +1,3 @@
-#include <sys/wait.h>
-
 #include <err.h>
 #include <signal.h>
 #include <stdio.h>
