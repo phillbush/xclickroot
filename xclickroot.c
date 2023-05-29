@@ -1,6 +1,7 @@
 #include <sys/wait.h>
 
 #include <err.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -52,6 +53,9 @@ main(int argc, char *argv[])
 	if (argc == 0)
 		usage();
 
+	/* don't leave zombies around */
+	signal(SIGCHLD, SIG_IGN);
+
 	/* open connection to server and set X variables */
 	if ((dpy = XOpenDisplay(NULL)) == NULL)
 		errx(EXIT_FAILURE, "cannot open display");
@@ -67,14 +71,15 @@ main(int argc, char *argv[])
 			XUngrabPointer(dpy, ev.xbutton.time);
 			XAllowEvents(dpy, ReplayPointer, CurrentTime);
 			XFlush(dpy);
-			if (fork() == 0) {
-				if (fork() == 0) {
-					execvp(*argv, argv);
-					err(127, NULL);
-				}
-				exit(0);
+			switch (fork()) {
+			case -1:
+				warn("can't fork");
+				break;
+			case 0:
+				execvp(*argv, argv);
+				warn("can't exec %s", *argv);
+				_exit(127);
 			}
-			wait(NULL);
 		}
 	}
 	XCloseDisplay(dpy);
