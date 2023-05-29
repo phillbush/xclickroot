@@ -7,15 +7,11 @@
 
 #include <X11/Xlib.h>
 
-static Display *dpy;
-static Window rootwin;
-static int screen;
-
 static void
 usage(void)
 {
 	(void)fprintf(stderr, "usage: xclickroot [-12345lmr] command [args...]\n");
-	exit(1);
+	exit(EXIT_FAILURE);
 }
 
 int
@@ -23,6 +19,13 @@ main(int argc, char *argv[])
 {
 	unsigned button;
 	XEvent ev;
+	Display *dpy;
+	Window rootwin;
+
+#if __OpenBSD__
+	if (pledge("unix stdio rpath proc exec", NULL) == -1)
+		err(EXIT_FAILURE, "pledge");
+#endif
 
 	argv++;
 	argc--;
@@ -51,8 +54,7 @@ main(int argc, char *argv[])
 
 	/* open connection to server and set X variables */
 	if ((dpy = XOpenDisplay(NULL)) == NULL)
-		errx(1, "cannot open display");
-	screen = DefaultScreen(dpy);
+		errx(EXIT_FAILURE, "cannot open display");
 	rootwin = DefaultRootWindow(dpy);
 	XGrabButton(dpy, button, AnyModifier, rootwin, False, ButtonPressMask,
 	            GrabModeSync, GrabModeSync, None, None);
