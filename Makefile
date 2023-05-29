@@ -9,7 +9,7 @@ ${PROG}: ${OBJS}
 	${CC} -o $@ ${OBJS} ${LDFLAGS}
 
 .c.o:
-	${CC} ${CFLAGS} -c $<
+	${CC} ${CFLAGS} ${CPPFLAGS} -c $<
 
 clean:
 	-rm ${OBJS} ${PROG}

@@ -13,8 +13,8 @@ INCS = -I${X11INC}
 LIBS = -L${X11LIB} -lX11
 
 # flags
-CPPFLAGS =
-CFLAGS = -Wall -Wextra ${INCS}
+CPPFLAGS = ${INCS}
+CFLAGS = -Wall -Wextra
 LDFLAGS = ${LIBS}
 
 # compiler and linker
