@@ -22,9 +22,9 @@ One of the options -l, -m, -r, -1, -2, -3, -4, or -5 can be  passed as
 first argument.  Those options indicates, respectivelly, that the left,
 middle, right or N-th mouse button is to be used instead.
 
-Call xclickroot on your .xinit or .xsession file in background, before
-the window manager.  As the following:
+Call xclickroot on your ~/.xinitrc or ~/.xsession file in background,
+before the window manager.  As the following:
 
 	xclickroot -l xterm &
 
-Read the manual for more information on running xmenu.
+Read the manual for more information on running xclickroot.
