@@ -16,6 +16,7 @@ usage(void)
 int
 main(int argc, char *argv[])
 {
+	struct sigaction sa;
 	unsigned button;
 	XEvent ev;
 	Display *dpy;
@@ -47,7 +48,12 @@ main(int argc, char *argv[])
 		usage();
 
 	/* don't leave zombies around */
-	signal(SIGCHLD, SIG_IGN);
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = SA_NOCLDSTOP | SA_NOCLDWAIT | SA_RESTART;
+	if (sigemptyset(&sa.sa_mask) == -1)
+		err(EXIT_FAILURE, "sigemptyset");
+	if (sigaction(SIGCHLD, &sa, NULL) == -1)
+		err(EXIT_FAILURE, "sigaction");
 
 	/* open connection to server and set X variables */
 	if ((dpy = XOpenDisplay(NULL)) == NULL)
