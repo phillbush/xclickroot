@@ -48,7 +48,7 @@ main(int argc, char *argv[])
 		usage();
 
 	/* don't leave zombies around */
-	sa.sa_handler = SIG_IGN;
+	sa.sa_handler = SIG_DFL;
 	sa.sa_flags = SA_NOCLDSTOP | SA_NOCLDWAIT | SA_RESTART;
 	if (sigemptyset(&sa.sa_mask) == -1)
 		err(EXIT_FAILURE, "sigemptyset");
